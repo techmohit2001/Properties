@@ -132,8 +132,8 @@ document.addEventListener('DOMContentLoaded', function() {
       
       const table = document.createElement('table');
       const fieldNames = {
-          landSize: 'Land Size (sq. ft.)',
-          price: 'Price (₹)',
+          landSize: 'Land Size',
+          price: 'Price Rs.',
           propertyType: 'Property Type',
           state: 'State',
           district: 'District/Tehsil',
@@ -197,8 +197,8 @@ document.addEventListener('DOMContentLoaded', function() {
           // Add table data
           const tableData = [];
           const fieldNames = {
-              landSize: 'Land Size (sq. ft.)',
-              price: 'Price (₹)',
+              landSize: 'Land Size',
+              price: 'Price Rs.',
               propertyType: 'Property Type',
               state: 'State',
               district: 'District/Tehsil',
