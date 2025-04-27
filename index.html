@@ -5,114 +5,220 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Property Form</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Using more reliable PDF libraries with specific versions -->
+    <!-- PDF libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <!-- jQuery for easier form handling -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
+    <div class="background-container">
+        <div class="background-image primary"></div>
+        <div class="background-image secondary"></div>
+    </div>
+
     <div class="container">
-        <h1>Property Details Form</h1>
+        <div class="form-header">
+            <img src="logo.png" alt="Company Logo" class="company-logo" id="companyLogo">
+            <h1><center>Land Details Form</center></h1>
+        </div>
+
         <form id="propertyForm">
-            <div class="form-group">
-                <label for="landSize">Land Size<span class="required">*</span></label>
-                <input type="text" id="landSize" name="landSize" required>
+            <!-- Basic Details -->
+            <div class="form-section">
+                <h2>Basic Details</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="agentName">Agent Name:</label>
+                        <input type="text" id="agentName" name="agentName">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="propertyOwnerName">Property Owner Name:</label>
+                        <input type="text" id="propertyOwnerName" name="propertyOwnerName">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="landSize">Land Size:</label>
+                        <input type="text" id="landSize" name="landSize">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price Rs. :</label>
+                        <input type="text" id="price" name="price">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="propertyType">Property Type</label>
+                        <select id="propertyType" name="propertyType">
+                            <option value="">Select Property Type</option>
+                            <option value="Agricultural">Agricultural</option>
+                            <option value="Commercial">Commercial</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="otherPropertyTypeGroup" style="display: none;">
+                        <label for="otherPropertyType">Specify Other Property Type</label>
+                        <input type="text" id="otherPropertyType" name="otherPropertyType">
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="price">Price<span class="required">*</span></label>
-                <input type="text" id="price" name="price" required>
+            <!-- Location Details -->
+            <div class="form-section">
+                <h2>Location Details:</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <select id="state" name="state">
+                            <option value="">Select State</option>
+                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                            <option value="Assam">Assam</option>
+                            <option value="Bihar">Bihar</option>
+                            <option value="Chhattisgarh">Chhattisgarh</option>
+                            <option value="Goa">Goa</option>
+                            <option value="Gujarat">Gujarat</option>
+                            <option value="Haryana">Haryana</option>
+                            <option value="Himachal Pradesh">Himachal Pradesh</option>
+                            <option value="Jharkhand">Jharkhand</option>
+                            <option value="Karnataka">Karnataka</option>
+                            <option value="Kerala">Kerala</option>
+                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="Manipur">Manipur</option>
+                            <option value="Meghalaya">Meghalaya</option>
+                            <option value="Mizoram">Mizoram</option>
+                            <option value="Nagaland">Nagaland</option>
+                            <option value="Odisha">Odisha</option>
+                            <option value="Punjab">Punjab</option>
+                            <option value="Rajasthan">Rajasthan</option>
+                            <option value="Sikkim">Sikkim</option>
+                            <option value="Tamil Nadu">Tamil Nadu</option>
+                            <option value="Telangana">Telangana</option>
+                            <option value="Tripura">Tripura</option>
+                            <option value="Uttar Pradesh">Uttar Pradesh</option>
+                            <option value="Uttarakhand">Uttarakhand</option>
+                            <option value="West Bengal">West Bengal</option>
+                            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                            <option value="Chandigarh">Chandigarh</option>
+                            <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                            <option value="Ladakh">Ladakh</option>
+                            <option value="Lakshadweep">Lakshadweep</option>
+                            <option value="Puducherry">Puducherry</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="district">District/Tehsil:</label>
+                        <input type="text" id="district" name="district">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="village">Village:</label>
+                        <input type="text" id="village" name="village">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="khasraNo">Khasra no./Khata no.:</label>
+                        <input type="text" id="khasraNo" name="khasraNo">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="roadConnection">Road Connection:</label>
+                        <select id="roadConnection" name="roadConnection">
+                            <option value="">Select Option</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="roadSizeGroup" style="display: none;">
+                        <label for="roadSize">Road Size</label>
+                        <input type="te" id="roadSize" name="roadSize">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="location">Current Location:</label>
+                        <div class="location-container">
+                            <input type="text" id="location" name="location" readonly>
+                            <button type="button" id="getLocationBtn" class="location-btn">Get Location</button>
+                        </div>
+                        <input type="hidden" id="latitude" name="latitude">
+                        <input type="hidden" id="longitude" name="longitude">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="landmark">Nearest Landmark/Distance</label>
+                        <input type="text" id="landmark" name="landmark">
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="propertyType">Property Type:<span class="required">*</span></label>
-                <select id="propertyType" name="propertyType" required>
-                    <option value="">Select Property Type</option>
-                    <option value="Commercial">Commercial</option>
-                    <option value="Agricultural">Agricultural</option>
-                    <option value="Others">Others</option>
-                </select>
+            <!-- Media Uploads -->
+            <div class="form-section">
+                <h2>Property Media</h2>
+                
+                <div class="form-group">
+                    <label for="photos">Upload Photos (Multiple):</label>
+                    <input type="file" id="photos" name="photos" accept="image/*" multiple>
+                    <div id="photoPreview" class="preview-container"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="video">Upload Video (Optional)</label>
+                    <input type="file" id="video" name="video" accept="video/*">
+                    <div id="videoPreview" class="preview-container"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="comments">Additional Comments:</label>
+                    <textarea id="comments" name="comments" rows="4"></textarea>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="state">State:<span class="required">*</span></label>
-                <select id="state" name="state" required>
-                    <option value="">Select State</option>
-                    <option value="Andhra Pradesh">Andhra Pradesh</option>
-                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                    <option value="Assam">Assam</option>
-                    <option value="Bihar">Bihar</option>
-                    <option value="Chhattisgarh">Chhattisgarh</option>
-                    <option value="Goa">Goa</option>
-                    <option value="Gujarat">Gujarat</option>
-                    <option value="Haryana">Haryana</option>
-                    <option value="Himachal Pradesh">Himachal Pradesh</option>
-                    <option value="Jharkhand">Jharkhand</option>
-                    <option value="Karnataka">Karnataka</option>
-                    <option value="Kerala">Kerala</option>
-                    <option value="Madhya Pradesh">Madhya Pradesh</option>
-                    <option value="Maharashtra">Maharashtra</option>
-                    <option value="Manipur">Manipur</option>
-                    <option value="Meghalaya">Meghalaya</option>
-                    <option value="Mizoram">Mizoram</option>
-                    <option value="Nagaland">Nagaland</option>
-                    <option value="Odisha">Odisha</option>
-                    <option value="Punjab">Punjab</option>
-                    <option value="Rajasthan">Rajasthan</option>
-                    <option value="Sikkim">Sikkim</option>
-                    <option value="Tamil Nadu">Tamil Nadu</option>
-                    <option value="Telangana">Telangana</option>
-                    <option value="Tripura">Tripura</option>
-                    <option value="Uttar Pradesh">Uttar Pradesh</option>
-                    <option value="Uttarakhand">Uttarakhand</option>
-                    <option value="West Bengal">West Bengal</option>
-                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                    <option value="Chandigarh">Chandigarh</option>
-                    <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
-                    <option value="Delhi">Delhi</option>
-                    <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                    <option value="Ladakh">Ladakh</option>
-                    <option value="Lakshadweep">Lakshadweep</option>
-                    <option value="Puducherry">Puducherry</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="district">District/Tehsil:<span class="required">*</span></label>
-                <input type="text" id="district" name="district" required>
-            </div>
-
-            <div class="form-group">
-                <label for="village">Village:<span class="required">*</span></label>
-                <input type="text" id="village" name="village" required>
-            </div>
-
-            <div class="form-group">
-                <label for="khasraNo">Khasra no./Khata no.<span class="required">*</span></label>
-                <input type="text" id="khasraNo" name="khasraNo" required>
-            </div>
-
-            <div class="form-group">
-                <label for="photos">Upload Photos (Multiple)<span class="required">*</span></label>
-                <input type="file" id="photos" name="photos" accept="image/*" multiple required>
-                <div id="photoPreview" class="preview-container"></div>
-            </div>
-
-            <div class="form-group">
-                <label for="video">Upload Video (Optional)</label>
-                <input type="file" id="video" name="video" accept="video/*">
-                <div id="videoPreview" class="preview-container"></div>
-            </div>
-
+            <!-- Action Buttons -->
             <div class="button-group">
                 <button type="submit" id="submitBtn">Submit & Generate PDF</button>
-                <button type="reset">Reset</button>
+                <button type="reset" id="resetBtn">Reset</button>
             </div>
         </form>
     </div>
 
     <!-- PDF generation status -->
     <div id="pdfStatus" class="pdf-status"></div>
+
+    <!-- PDF Preview Modal -->
+    <div id="pdfModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>PDF Preview</h2>
+            <div id="pdfPreview" class="pdf-preview"></div>
+            <div class="modal-buttons">
+                <button id="downloadPdfBtn">Download PDF</button>
+                <button id="sendEmailBtn">Send via Email</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden div to store company logo as data URL -->
+    <div id="logoContainer" style="display: none;"></div>
 
     <script src="script.js"></script>
 </body>
