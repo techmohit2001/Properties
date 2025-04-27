@@ -1,72 +1,163 @@
-body {
-  background-image: url('a.jpg');
+/* Background setup */
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  display: flex;
-  justify-content: flex-end; /* Changed to align to right */
-  align-items: flex-start;
-  padding:10px;
-  height: 120vh;
-  width: 100%;
 }
 
+.background-image.primary {
+  background-image: url('a.jpg');
+}
+
+.background-image.secondary {
+  background-image: url('b.jpg'); 
+  opacity: 0.4;
+  z-index: -2;
+}
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background-color: #f5f5f5;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 10px;
+  min-height: 100vh;
+  width: 100%;
   color: #333;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 .container {
-  max-width: 600px;
-  margin: 20px 0 20px auto; /* Right aligned */
+  position: relative;
+  width: 600px;
+  max-width: 100%;
   padding: 20px;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.85);
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: rgba(255, 255, 255, 0.85); /* White with 85% opacity */
-  width: 90%;
-  height: 100%;             /* Full height relative to parent */
-  min-height: 100vh;        /* Ensure it matches at least full viewport height */
-  margin: 0 0 0 auto;       /* Align to right */
+  margin: 0 10px 0 auto;
+  min-height: calc(100vh - 20px);
+  overflow-y: auto;
+  flex-shrink: 0;
 }
 
-h1 {
-  text-align: center;
+.form-header {
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
-  color: #2c3e50;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.company-logo {
+  margin-right: 10px;
+  width: 130px;
+  height: 50px;
+  object-fit: contain;
+} 
+
+h1 {
+  color: #0b1014;
+  font-weight: 800;
+  flex: 1;
+  text-align: center;
+  font-size: 22px;
+}
+
+.form-section {
+  margin-bottom: 25px;
+  padding: 15px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border-left: 4px solid #04793e;
+}
+
+.form-section h2 {
+  color: #165821;
+  font-size: 18px;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  flex: 1 1 300px;
+  margin: 0 10px 15px;
 }
 
 label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #555;
 }
 
-input, select {
+input, select, textarea {
   width: 100%;
-  padding: 10px;
+  padding: 10px 12px;
   border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border-color 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
 input[type="file"] {
   padding: 8px;
   border: 1px dashed #ddd;
   background-color: #f9f9f9;
+}
+
+.location-container {
+  display: flex;
+  gap: 10px;
+}
+
+.location-container input {
+  flex: 1;
+}
+
+.location-btn {
+  padding: 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .preview-container {
@@ -78,25 +169,27 @@ input[type="file"] {
 
 .preview-container img, 
 .preview-container video {
-  max-width: 150px;
-  max-height: 150px;
-  border-radius: 4px;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 6px;
   border: 1px solid #ddd;
 }
 
 .button-group {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 button {
   padding: 12px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  font-weight: 500;
 }
 
 button[type="submit"] {
@@ -113,55 +206,64 @@ button[type="reset"] {
 }
 
 button:hover {
-  opacity: 0.9;
-}
-
-@media (max-width: 600px) {
-  .container {
-      padding: 15px;
-      margin: 10px;
-  }
-  
-  .button-group {
-      flex-direction: column;
-      gap: 10px;
-  }
-  
-  button[type="submit"], 
-  button[type="reset"] {
-      width: 100%;
-      margin-right: 0;
-  }
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* PDF Status */
 .pdf-status {
-  max-width: 800px;
-  margin: 10px auto;
-  padding: 10px;
-  border-radius: 4px;
-  text-align: center;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   display: none;
+  max-width: 300px;
+  text-align: center;
 }
 
 .pdf-status.loading {
   display: block;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  background-color: #3498db;
 }
 
 .pdf-status.success {
   display: block;
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  color: #155724;
+  background-color: #2ecc71;
 }
 
 .pdf-status.error {
   display: block;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  color: #721c24;
+  background-color: #e74c3c;
+}
+
+.pdf-status.warning {
+  display: block;
+  background-color: #f39c12;
+}
+
+.pdf-status.info {
+  display: block;
+  background-color: #3498db;
+}
+
+/* Add animation for loading status */
+.pdf-status.loading:after {
+  content: "...";
+  animation: loading-dots 1.5s infinite;
+  display: inline-block;
+  width: 20px;
+  text-align: left;
+}
+
+@keyframes loading-dots {
+  0% { content: "."; }
+  33% { content: ".."; }
+  66% { content: "..."; }
 }
 
 /* Modal for PDF preview */
@@ -174,17 +276,32 @@ button:hover {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transition: opacity 0.3s;
+  overflow-y: auto;
+}
+
+.modal.show {
+  display: block;
+  opacity: 1;
 }
 
 .modal-content {
   background-color: #fff;
   margin: 5% auto;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 25px;
+  border-radius: 10px;
   width: 80%;
-  max-width: 800px;
-  max-height: 80vh;
+  max-width: 900px;
+  max-height: 85vh;
   overflow-y: auto;
+  transform: translateY(-20px);
+  transition: transform 0.3s;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+}
+
+.modal.show .modal-content {
+  transform: translateY(0);
 }
 
 .close-modal {
@@ -193,61 +310,326 @@ button:hover {
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
+  transition: color 0.2s;
 }
 
 .close-modal:hover {
   color: #333;
 }
 
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.modal-buttons button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
 /* PDF Preview Content */
 .pdf-preview {
   padding: 20px;
-  font-family: Arial, sans-serif;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 15px;
+  background-color: #f9fafb;
+  position: relative;
 }
 
 .pdf-header {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
-  border-bottom: 2px solid #3498db;
   padding-bottom: 10px;
+  border-bottom: 2px solid #3498db;
+}
+
+.pdf-header-left {
+  display: flex;
+  align-items: center;
+}
+
+.pdf-header-logo {
+  margin-right: 15px;
+  width: 100px;
+  height: auto;
+}
+
+.pdf-header-title {
+  color: #2c3e50;
+  font-size: 22px;
+}
+
+.pdf-header-right {
+  text-align: right;
+}
+
+.pdf-title {
+  text-align: center;
+  margin: 20px 0;
+  color: #2c3e50;
+  font-size: 24px;
 }
 
 .pdf-body {
   line-height: 1.6;
+  position: relative;
+}
+
+.pdf-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  opacity: 0.1;
+  z-index: 1;
+  width: 70%;
+  max-width: 400px;
+  height: auto;
 }
 
 .pdf-body table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+  table-layout: fixed;
+  position: relative;
+  z-index: 2;
+  border: 2px solid #3498db;
 }
 
 .pdf-body table, .pdf-body th, .pdf-body td {
-  border: 1px solid #ddd;
+  border: 1px solid #34a6db;
 }
 
 .pdf-body th, .pdf-body td {
-  padding: 10px;
+  padding: 12px;
   text-align: left;
 }
 
 .pdf-body th {
-  background-color: #f2f2f2;
+  width: 30%;
+  background-color: #eaf4fd;
+  color: #333;
+  font-weight: bold;
+}
+
+.pdf-body td {
+  width: 70%;
+  background-color: #fff;
+}
+
+.pdf-body caption {
+  font-weight: bold;
+  padding: 8px;
+  background-color: #1c6405;
+  color: white;
+  border: 1px solid #3498db;
+  border-bottom: none;
 }
 
 .pdf-images {
   margin-top: 20px;
+  position: relative;
+  z-index: 2;
 }
 
 .pdf-images h3 {
   margin-bottom: 10px;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 5px;
+  color: #2c3e50;
+  padding: 8px;
+  background-color: #eaf4fd;
+  border: 1px solid #3498db;
+}
+
+.pdf-images-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #fff;
 }
 
 .pdf-images img {
   max-width: 200px;
   max-height: 200px;
-  margin: 5px;
   border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.pdf-footer {
+  margin-top: 30px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+  text-align: center;
+  color: #777;
+  font-size: 0.9em;
+  position: relative;
+  z-index: 2;
+} 
+
+/* Mobile Responsiveness - Optimized for compact display */
+@media screen and (max-width: 768px) {
+  body {
+    justify-content: center;
+    padding: 0;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 8px;
+    border-radius: 0;
+    min-height: 100vh;
+  }
+  
+  .form-header {
+    margin-bottom: 12px;
+  }
+  
+  .company-logo {
+    width: 100px;
+    height: 40px;
+  }
+  
+  h1 {
+    font-size: 18px;
+  }
+  
+  .form-section {
+    margin-bottom: 15px;
+    padding: 10px;
+  }
+  
+  .form-section h2 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+  }
+  
+  /* Reduce space between fields */
+  .form-row {
+    margin: 0;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin: 0 0 8px;
+    flex: 1 1 100%;
+  }
+  
+  /* Compact inputs */
+  label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  input, select, textarea {
+    font-size: 16px; /* Prevent iOS zoom on focus */
+    padding: 10px 12px;
+    width: 100%;
+  }
+  
+  /* More compact file inputs */
+  input[type="file"] {
+    padding: 5px;
+  }
+  
+  /* Adjust location button in mobile view */
+  .location-container {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .location-btn {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  
+  /* Adjust preview images size */
+  .preview-container {
+    gap: 5px;
+    margin-top: 5px;
+  }
+  
+  .preview-container img, 
+  .preview-container video {
+    width: 80px;
+    height: 80px;
+  }
+  
+  /* Compact buttons */
+  .button-group {
+    margin-top: 15px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  button {
+    padding: 10px;
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  button[type="submit"] {
+    margin-right: 0;
+  }
+  
+  /* Adjust modal for mobile */
+  .modal-content {
+    width: 95%;
+    padding: 15px;
+    margin: 10% auto;
+  }
+  
+  .pdf-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .pdf-header-left, .pdf-header-right {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  
+  .pdf-status {
+    width: 90%;
+    right: 5%;
+    bottom: 10px;
+  }
+  
+  /* Adjustments for form elements to reduce vertical spacing */
+  textarea {
+    height: 60px;
+  }
+  
+  /* Ensure no additional margins on nested elements */
+  .form-group > * {
+    margin-bottom: 0;
+  }
+  
+  /* Fix for any nested margins that might cause extra spacing */
+  .form-group:last-child {
+    margin-bottom: 0;
+  }
 }
