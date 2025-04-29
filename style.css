@@ -136,9 +136,14 @@ input:focus, select:focus, textarea:focus {
 }
 
 input[type="file"] {
-  padding: 8px;
-  border: 1px dashed #ddd;
+  padding: 12px;
+  border: 2px dashed #3498db;
   background-color: #f9f9f9;
+  font-size: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  position: relative;
 }
 
 .location-container {
@@ -549,7 +554,12 @@ button:hover {
   
   /* More compact file inputs */
   input[type="file"] {
-    padding: 5px;
+    padding: 14px 8px;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #3498db;
+    background-color: #eaf4fd;
   }
   
   /* Adjust location button in mobile view */
@@ -564,11 +574,13 @@ button:hover {
     font-size: 15px;
     font-weight: 500;
   }
+
   
   /* Adjust preview images size */
   .preview-container {
     gap: 5px;
     margin-top: 5px;
+    justify-content: center;
   }
   
   .preview-container img, 
