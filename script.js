@@ -32,92 +32,154 @@ document.addEventListener('DOMContentLoaded', function() {
     // Google Sheet submission URL - Replace with your actual deployment URL
     const googleSheetURL = 'https://script.google.com/macros/s/AKfycbyqBp2cGm5kNvq1aMWZVgcgNokuMPyuvZZIZy3RxvKIpuzGUYSpKJAEAogEGtM5sduLDQ/exec';
     
-    // Add this code to your existing script.js file
-// This improves the mobile experience for file uploads
+        // UPDATED: Improved mobile experience for file uploads
+    // Detect if device is mobile
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-// Detect if device is mobile
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-// Function to enhance the file inputs for mobile
-function enhanceFileInputs() {
-  const photoInput = document.getElementById('photos');
-  const videoInput = document.getElementById('video');
-  
-  // Make file inputs more mobile-friendly
-  if (isMobile) {
-    // For photo input
-    photoInput.addEventListener('click', function() {
-      // This creates a more explicit user interaction on mobile
-      this.setAttribute('capture', 'gallery');
-    });
-    
-    // For video input
-    videoInput.addEventListener('click', function() {
-      // This ensures camera access for videos on mobile
-      this.setAttribute('capture', 'camera');
-    });
-  }
-  
-  // Improve the visual feedback when files are selected
-  photoInput.addEventListener('change', function() {
-    if (this.files.length > 0) {
-      document.getElementById('photoPreview').innerHTML = '';
-      
-      // Show loading indicator
-      const loadingMsg = document.createElement('div');
-      loadingMsg.textContent = `Processing ${this.files.length} image(s)...`;
-      loadingMsg.className = 'loading-message';
-      document.getElementById('photoPreview').appendChild(loadingMsg);
-      
-      // Process each file with a slight delay to prevent UI freeze
-      setTimeout(() => {
-        displayFilePreview(this.files, 'photoPreview', 'image');
-        document.getElementById('photoPreview').removeChild(loadingMsg);
-      }, 300);
+    // Function to enhance the file inputs for mobile
+    function enhanceFileInputs() {
+        const photoInput = document.getElementById('photos');
+        const videoInput = document.getElementById('video');
+        
+        
+        
+        // Make file inputs more mobile-friendly
+        if (isMobile) {
+            // For photo input - REMOVED capture attribute to allow gallery selection
+            photoInput.addEventListener('click', function() {
+                // Make sure accept attribute is set correctly for images
+                this.setAttribute('accept', 'image/*');
+                // Remove any capture attribute that might force camera
+                this.removeAttribute('capture');
+            });
+            
+            // For video input - Keep camera as default for videos
+            videoInput.addEventListener('click', function() {
+                this.setAttribute('accept', 'video/*');
+                // This ensures camera access for videos on mobile if needed
+                this.setAttribute('capture', 'camera');
+            });
+            
+            // Add better touch feedback
+            const inputLabels = document.querySelectorAll('label[for="photos"], label[for="video"]');
+            inputLabels.forEach(label => {
+                label.style.padding = '12px';
+                label.style.margin = '8px 0';
+                label.style.display = 'inline-block';
+                label.style.backgroundColor = '#f9f9f9';
+                label.style.border = '1px solid #ddd';
+                label.style.borderRadius = '4px';
+                label.style.textAlign = 'center';
+            });
+        }
+        
+        // Improve the visual feedback when files are selected
+        photoInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                document.getElementById('photoPreview').innerHTML = '';
+                
+                // Show loading indicator
+                const loadingMsg = document.createElement('div');
+                loadingMsg.textContent = `Processing ${this.files.length} image(s)...`;
+                loadingMsg.className = 'loading-message';
+                document.getElementById('photoPreview').appendChild(loadingMsg);
+                
+                // Process each file with a slight delay to prevent UI freeze
+                setTimeout(() => {
+                    displayFilePreview(this.files, 'photoPreview', 'image');
+                    document.getElementById('photoPreview').removeChild(loadingMsg);
+                }, 300);
+            }
+        });
+        
+        videoInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                document.getElementById('videoPreview').innerHTML = '';
+                displayFilePreview(this.files, 'videoPreview', 'video');
+            }
+        });
     }
-  });
-  
-  videoInput.addEventListener('change', function() {
-    if (this.files.length > 0) {
-      document.getElementById('videoPreview').innerHTML = '';
-      displayFilePreview(this.files, 'videoPreview', 'video');
+
+    // Improved function to display file previews
+    function displayFilePreview(files, previewId, type) {
+        const previewContainer = document.getElementById(previewId);
+        previewContainer.innerHTML = '';
+        
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                if (type === 'image') {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = 'Image preview';
+                    img.className = 'preview-item';
+                    
+                    // Create image container with delete button
+                    const imgContainer = document.createElement('div');
+                    imgContainer.className = 'preview-container';
+                    imgContainer.style.position = 'relative';
+                    imgContainer.style.display = 'inline-block';
+                    imgContainer.style.margin = '5px';
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerHTML = '×';
+                    deleteBtn.className = 'delete-preview';
+                    deleteBtn.style.position = 'absolute';
+                    deleteBtn.style.top = '5px';
+                    deleteBtn.style.right = '5px';
+                    deleteBtn.style.backgroundColor = 'rgba(255,0,0,0.7)';
+                    deleteBtn.style.color = 'white';
+                    deleteBtn.style.border = 'none';
+                    deleteBtn.style.borderRadius = '50%';
+                    deleteBtn.style.width = '20px';
+                    deleteBtn.style.height = '20px';
+                    deleteBtn.style.lineHeight = '18px';
+                    deleteBtn.style.cursor = 'pointer';
+                    deleteBtn.style.zIndex = '2';
+                    
+                    // Delete functionality
+                    deleteBtn.onclick = function(event) {
+                        event.preventDefault();
+                        const dataUrl = img.src;
+                        // Remove from UI
+                        imgContainer.remove();
+                        // Remove from stored data URLs
+                        photoDataUrls = photoDataUrls.filter(item => item.dataUrl !== dataUrl);
+                    };
+                    
+                    imgContainer.appendChild(img);
+                    imgContainer.appendChild(deleteBtn);
+                    previewContainer.appendChild(imgContainer);
+                    
+                    // Store the data URL for PDF generation
+                    photoDataUrls.push({
+                        name: file.name,
+                        dataUrl: e.target.result
+                    });
+                } else if (type === 'video') {
+                    const video = document.createElement('video');
+                    video.src = e.target.result;
+                    video.controls = true;
+                    video.muted = true;
+                    video.className = 'preview-item';
+                    previewContainer.appendChild(video);
+                    
+                    // Store video data URL
+                    videoDataUrl = {
+                        name: file.name,
+                        dataUrl: e.target.result
+                    };
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        });
     }
-  });
-}
 
-// Improved function to display file previews
-function displayFilePreview(files, previewId, type) {
-  const previewContainer = document.getElementById(previewId);
-  previewContainer.innerHTML = '';
-  
-  Array.from(files).forEach(file => {
-    const reader = new FileReader();
+    // Initialize enhancements when the page loads
+    enhanceFileInputs();
     
-    reader.onload = function(e) {
-      if (type === 'image') {
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        img.alt = 'Image preview';
-        img.className = 'preview-item';
-        previewContainer.appendChild(img);
-      } else if (type === 'video') {
-        const video = document.createElement('video');
-        video.src = e.target.result;
-        video.controls = true;
-        video.muted = true;
-        video.className = 'preview-item';
-        previewContainer.appendChild(video);
-      }
-    };
-    
-    reader.readAsDataURL(file);
-  });
-}
-
-// Initialize enhancements when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-  enhanceFileInputs();
-});
     // Ensure jsPDF and other libraries are loaded
     if (typeof window.jspdf === 'undefined') {
         console.error("jsPDF library not loaded!");
